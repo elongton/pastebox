@@ -1,0 +1,32 @@
+<input id="exceptionsFileInput" style="display:none;" type="file" #file (change)="onFileChange($event);"
+  accept=" .txt" />
+
+
+<button (click)="import();">Import Text File</button>
+<button style="float: right;" (click)="undo()" *ngIf="aoaToExport && undoStack.length">Undo</button>
+<br>
+<br>
+<div *ngIf="!aoaToExport">
+
+  <textarea  #inputTextBox name="" id="" cols="30" rows="10"></textarea>
+  <br>
+  <button (click)="convertToTable(inputTextBox['value'])">Submit Text</button>
+</div>
+<!-- convertToTable(inputTextBox['value']) -->
+<br>
+<span *ngIf="!aoaToExport">No data yet...</span>
+
+<div *ngIf="aoaToExport">
+  <table width='100%'>
+    <tbody>
+      <tr *ngFor="let row of aoaToExport; let i=index">
+        <td *ngFor="let cell of row; let j=index" (mouseenter) ="addToMergeArray(i, j)"  (mousedown)="startMergeArray(i, j)" (mouseup)="endMergeArray()" [ngClass]="{'selected': isSelected(i, j)}">{{cell}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <br>
+  
+  <button (click)="export(aoaToExport);">Export</button>
+
+</div>
